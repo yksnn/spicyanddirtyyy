@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spicy and dirty</title>
+  <style>
+    :root {
+      --card-color: #ff6ec7;      /* Ягаан */
+      --bg-color: #111111;        /* Хар фон */
+      --text-color: #ffffff;      /* Цагаан текст */
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: 0.3s ease;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      color: var(--card-color);
+      margin-bottom: 10px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .card {
+      width: 320px;
+      height: 180px;
+      background: var(--card-color);
+      color: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(255, 110, 199, 0.3);
+      padding: 30px;
+      font-size: 22px;
+      margin: 30px auto;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 35px rgba(255, 110, 199, 0.5);
+    }
+
+    button {
+      background: var(--card-color);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(255, 110, 199, 0.3);
+    }
+
+    button:hover {
+      background: #e05aad;
+    }
+
+    @media (max-width: 400px) {
+      .card {
+        width: 90%;
+        height: 160px;
+        font-size: 18px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="startScreen">
+    <h1>Spicy and Dirty</h1>
+    <p>Би ч халуухан чи ч халуухан маш халуухан асуулт шийтгэл та бүгдийг хүлээж байна цагийг хөгжилтэй бас халуухан өнгөрөөгөөрэй</p>
+    <button onclick="startGame()">Эхлэх</button>
+  </div>
+
+
+
+
+
+
+  <div class="container" id="gameScreen" style="display:none;">
+    <div class="card" id="card" onclick="handleCardClick()">ХИЙХ ҮҮ?</div>
+  </div>
+
+  <script>
+    const cards = [
+      "15 удаа суниах.",
+      "Ичмээр дурсамжаа хэл.",
+      "10 секунд дуу дуул.",
+      "Сүүлд уйлсан шалтгаанаа хэл.",
+      "Нууц аа дэлгэ.",
+      "Нэг хүн дуурай.",
+      "Нэг шот уу.",
+      "Тоглогчийн нэр хэлээд үнэн зүйл хэл.",
+      "Нэг асуултад үнэнээр хариул.",
+      "Нэг хүнээс үнсэлт ав.",
+      "Хамгийн дургүй зүйлээ хэл.",
+      "Хэнийг чимээгүй хайрлаж байсан бэ?",
+      "Хамгийн хачин зуршлаа хуваалц.",
+      "Хэрвээ хэнийг үнсэх ёстой бол хэнийг сонгох вэ?",
+      "Хамгийн гоё үнсэлт хэзээ, хэнтэй байв?",
+      "Өмнө нь секс хийж байсан хүмүүсээ тоолж хүн тус бүр юундаа сайн байсныг нэрлэ эсвэл уу",
+      "эксийнхаа нэг нууцыг хэлэх эсвэл уу",
+      "тоглогчид дундаас нэг хүнийг үнс",
+      "сүүлийн найз залуу охиноосоо ягаад салсан бэ?",
+      "гэрийхнээсээ нуудаг хамгийн том нууцаа хэл эсвэл уу",
+      "аль нэг тоглогчийн чихэн дээрээ 10сек амьсгалуул эсвэл уу",
+      "хэн нэгэнтэй секс хийчээд таг алга болж байсан хүмүүс уу",
+      "Анал секс хийж эсвэл туршиж байсан завдаж байсан хийхийг бодож байсан бол уу",
+      "таксинд бөөлжиж байсан бол уу",
+      "эксрүүгээ залгаад спикер дээр нь тавиад залгаснаа мэдээгүй юм шиг бусхд тоглогчидтой анал сескийн тухай ярь эсвэл уу",
+      "хамгийн том бөгcтэй тоглогч уу",
+      "Толголч дундаас нэгэнтэй нь love shot хий",
+      "blowjob хийж байсан тоглогчид уу",
+      "Секси бүжиг хий эсвэл уу",
+      "Инстаграмдаа ганцаардаж байна гэж стори хий",
+      "Хамгийн удаандаа секс хийхгүй хэр удаж байсан бэ?",
+      "Хэн нэгэн хүнлүү ' Чи үнэхээр халуухан юм аа' гэж бич эсвэл уу",
+      "google ийн хамгийн сүүлийн хайлтаа үзүү",
+      "Дуртай байрлалаа хийж үзүүл",
+      "дур тавьсан мэт дүр үзүүлэж байсан уу",
+      "Хамгийн их экстэй тоглогчид уу",
+      "дур тавьхдаа гаргадаг царайгаа  гаргаж үзүүл эсвэл уу",
+      "Хоорондоо жогорч байсан тоглогчид уу",
+      "Нэг хувцас аа тайл эсвэл уу",
+      "нэг тоглогчийн өвөр дээр суугад 5минут бүжиглэ элвэс уу",
+      "Ойрын хугацаанд секс хийсэн тоглогчид уу",
+      "Хүссэн нэг тоглогчоо шийтгэx эрх",
+      "Энэ бол аврагдах эрх",
+      "Эксрүүгээ санаж байна гэж бич эсвэл уу",
+      "крашруугаа чи л миний сэрлийг хөдлөгдөг гэж бич эсвэл уу",
+      "зүүн гар талын тоглогчтой дараагийн өөрийн ээлжийг ирэх хүртэд хөтлөлц",
+      "Нэг хүний сториг дурайж хий эсвэл уу",
+      "Анхний болзоон дээрээ секс хийж байсан бол уу",
+      "one night хийж байсан тоглогчид уу",
+      "10с дээш bodycount-тай толголчид уу",
+      "бүх хүнд утсан дээрээ байгаа хамгийн задгай зургаа үзүүл эсвэл уу",
+      "баруун гар талд сууж байгаа хүнтэйгээ 10сек үнсэлц эсвэл хоёулаа уу",
+      "7хоногт 2с дээш удаа гар хангалга хийдэг хүмүүс уу",
+      "хэн нэгнийг шон болгоод 5мин шонтой бүжиг бүжиглэх эсвэл уу",
+      "3с дээш хүнтэй зэрэг харьцаж байсан тоглогчид уу",
+      "Хосоо араар нь тавих магадлалтай хүнийг сонгоод уулга",
+      "Долоон эгшигийг секси хоолойгоор чангаар хэл",
+      "Нэг тоглогчыг гар дээрээ өргөөд squat хий",
+
+
+    ];
+
+    let showingPrompt = true;
+    let currentIndex = -1;
+
+    function startGame() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("gameScreen").style.display = "block";
+      showPrompt();
+    }
+
+    function handleCardClick() {
+      const card = document.getElementById("card");
+
+      if (showingPrompt) {
+        let newIndex;
+        do {
+          newIndex = Math.floor(Math.random() * cards.length);
+        } while (newIndex === currentIndex);
+
+        currentIndex = newIndex;
+        card.textContent = cards[currentIndex];
+        showingPrompt = false;
+      } else {
+        card.textContent = "ХИЙ ЭСВЭЛ УУ";
+        showingPrompt = true;
+      }
+    }
+
+    function showPrompt() {
+      const card = document.getElementById("card");
+      card.textContent = "ХИЙ ЭСВЭЛ УУ";
+      showingPrompt = true;
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
